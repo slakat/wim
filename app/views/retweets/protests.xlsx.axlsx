@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "retweets") do |sheet|
+sheet.add_row ['to','from','date','text']
+@rt.each do |m|
+sheet.add_row [m.actor.screen_name, m.user_screen_name, m.rt_date, m.text ]
+end
+end

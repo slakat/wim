@@ -1,0 +1,5 @@
+<%- headers = ['created_at', 'text','user_screen_name'] -%>
+<%=CSV.generate_line headers %>
+<%- @mentions.each do |m| -%>
+  <%=CSV.generate_line([m.mention_date, m.text, m.user_screen_name]) %>
+<%- end -%>

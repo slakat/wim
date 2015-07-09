@@ -1,0 +1,5 @@
+<%- headers = ['to', 'from', 'date', 'text' ] -%>
+<%=CSV.generate_line headers,  :row_sep => ?\t, :quote_char => ?\ %>
+<%- @rt.each do |m| -%>
+  <%=CSV.generate_line([m.actor.screen_name, m.user_screen_name, m.rt_date, m.text ], :row_sep => ?\t, :quote_char => ?\ ) %>
+<%- end -%>

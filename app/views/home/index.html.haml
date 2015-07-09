@@ -1,0 +1,14 @@
+%h1 Home#index
+%p Find me in app/views/home/index.html.haml
+
+%p
+
+
+= link_to 'Download RT list', retweets_path(format: :xlsx)
+%br
+= link_to 'Download Excel list', ranking_path(format: :xlsx)
+%br
+  -
+= link_to 'Download marcha 1', protests_path(p:'2011-08-04',format: :xlsx)
+%br
+= link_to 'Download Marchas', zip_path

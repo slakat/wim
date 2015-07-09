@@ -1,0 +1,14 @@
+-# Para ocupar el partial, se necesita definir el método sort_direction y sort_column en el controlador
+  Entregar path y placeholder_text
+  Ejemplo Uso: render 'search/form', path: admin_surveys_path, sort_column: sort_column, sort_direction: sort_direction,
+  placeholder_text: 'Ingrese el nombre'
+= form_tag path, method: :get, id: :search_form do
+
+  .input-group
+    = hidden_field_tag :direction, sort_direction
+    = hidden_field_tag :sort, sort_column
+    = search_field_tag :search, params[:search], class: 'form-control', type: 'search',
+                            placeholder: placeholder_text
+    .input-group-btn
+      = button_tag :search_button, name: nil,class: 'btn btn-white search-button' do
+        %i.glyphicon.glyphicon-search

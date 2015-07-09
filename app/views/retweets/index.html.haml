@@ -1,0 +1,19 @@
+Hola
+
+
+= link_to 'Download CSV list', mentions_path(format: :csv)
+
+.row-fluid
+  .col-md-12
+    .grid.simple
+      .grid-title
+        %h4.semi-bold  Retweets Ranking
+        .tools
+          %a.marg-t-10.reload{:href => "javascript:;"}
+      .grid-body
+        .row
+          #retweets-table.col-md-12
+            = render 'retweets_table'
+
+:javascript
+  initSearchableTable('#retweets-table', '#search_form')

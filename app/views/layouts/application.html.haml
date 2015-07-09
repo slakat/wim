@@ -1,0 +1,24 @@
+%html>
+%head>
+  %title Wim
+  = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+  = javascript_include_tag 'application', 'data-turbolinks-track' => true
+
+  = csrf_meta_tags
+  %link{:href => "/assets/plugins/pace/pace-theme-flash.css", :media => "screen", :rel => "stylesheet", :type => "text/css"}/
+  / BEGIN CORE CSS FRAMEWORK
+  %link{:href => "/assets/plugins/boostrapv3/css/bootstrap.min.css", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "/assets/plugins/boostrapv3/css/bootstrap-theme.min.css", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "/assets/plugins/font-awesome/css/font-awesome.css", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "/assets/css/animate.min.css", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "/assets/plugins/jquery-scrollbar/jquery.scrollbar.css", :rel => "stylesheet", :type => "text/css"}/
+  / END CORE CSS FRAMEWORK
+  / BEGIN CSS TEMPLATE
+  %link{:href => "/assets/css/themes/coporate/style.css", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "/assets/css/themes/coporate/responsive.css", :rel => "stylesheet", :type => "text/css"}/
+  %link{:href => "/assets/css/custom-icon-set.css", :rel => "stylesheet", :type => "text/css"}/
+
+
+%body
+
+  = yield

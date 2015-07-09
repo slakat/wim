@@ -1,0 +1,7 @@
+wb = xlsx_package.workbook
+wb.add_worksheet(name: "retweets") do |sheet|
+sheet.add_row ['original_actor','retweets', 'tweet_date', 'favorited', 'in_reply_to_screen_name','permanent_link','lang','source', 'text','user_profile_description','user_profile_location','user_date', 'user_followers_count','user_name', 'user_screen_name','user_time_zone']
+@rt.each do |m|
+sheet.add_row [Actor.find(m.actor.id).screen_name,m.retweets, m.tweet_date, m.favorited, m.in_reply_to_screen_name,m.permanent_link,m.lang,m.source, m.text,m.user_profile_description,m.user_profile_location,m.user_date, m.user_followers_count,m.user_name, m.user_screen_name,m.user_time_zone]
+end
+end
