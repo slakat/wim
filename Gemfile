@@ -65,6 +65,7 @@ end
 # Beautiful HAML
 gem 'haml-rails'
 
+gem 'mysql2'
 
 # Font-Awesome with rails helpers
 gem 'font-awesome-rails'
