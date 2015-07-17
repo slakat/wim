@@ -57,6 +57,10 @@ end
 
 group :production do
   gem 'rails_12factor'
+  # Use mysql as the database for Active Record
+  gem 'mysql2'
+  # Print in a better way rails console
+  gem 'awesome_print'
 end
 # Beautiful HAML
 gem 'haml-rails'
