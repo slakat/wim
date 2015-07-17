@@ -31,3 +31,6 @@ test:
 production:
   <<: *default
   #database: db/production.sqlite3
+    database: wim_dev
+    username: root
+    host: 127.0.0.1
