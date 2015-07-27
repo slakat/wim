@@ -1,14 +1,43 @@
-%h1 Home#index
-%p Find me in app/views/home/index.html.haml
+.row-fluid
+  .col-md-3
+    .tiles.green.overflow-hidden.full-height{:style => "max-height:300px"}
+      .overlayer.bottom-right.fullwidth
+        .overlayer-wrapper
+          .tiles.gradient-black.p-l-20.p-r-20.p-b-20.p-t-20
+            .pull-right
+              =link_to '',id:'selected-actor-profile',class:"hashtags transparent" do
+                .i.fa.fa-bar-chart
+                Profile
+            .clearfix
+      =image_tag '',id:'selected-actor-image', class:'lazy hover-effect-img'
+    .tiles.black
+      .tiles-body.txt-18
+        .row
+          %h4.text-white.text-center
+            .i.fa.fa-twitter
+            %span#selected-actor-name name
+          %h4.text-white.text-center
+            =link_to 'Twitter','',id:'selected-actor-username', class:'text-white btn btn-success'
+    .row
+      .grid{:style => "margin-top:30px;margin-left:10px"}
+        = link_to 'Download Most RT Tweets Ranking', ranking_path(format: :xlsx), class: "btn btn-primary",:style => "width:300px"
+        %br
+        = link_to 'Download Marchas', zip_path, class:"btn btn-info",:style => "width:300px"
 
-%p
+  .col-md-9
+    .grid.simple
+      .row
+        .col-sm-12.col-xs-12
+          .relative
+            %input#query-hint.form-control.col-sm-4{type:"text", tabindex:"-1", autocomplete:"off", readonly:""}
+            %input#query.form-control{type:"text", placeholder:"All Actors"}
+          =#select_tag :actor, options_from_collection_for_select(@actors.all, :id, :name) ,class:'form-control select2',id: 'query'
+
+      .grid-title
 
 
-= link_to 'Download RT list', retweets_path(format: :xlsx)
-%br
-= link_to 'Download Excel list', ranking_path(format: :xlsx)
-%br
-  -
-= link_to 'Download marcha 1', protests_path(p:'2011-08-04',format: :xlsx)
-%br
-= link_to 'Download Marchas', zip_path
+        .row
+          .col-sm-12.col-xs-12
+            -@actors.each do |a|
+              .actor-img{'data-toggle'=>"tooltip", 'data-placement'=>"top",title: a.name,"data-username"=>"#{a.screen_name[1..-1]}"}
+                =image_tag '',class: "#{a.screen_name[1..-1]} sprite ",name:"#{a.name}",'data-href'=>"/actors/#{a.id}"

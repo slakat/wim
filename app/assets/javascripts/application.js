@@ -13,4 +13,22 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require select2
+//= require highcharts
+//= require highcharts/highcharts-more
+//= require highcharts/modules/data
+//= require highcharts/modules/heatmap
+//= require highcharts/modules/exporting
 //= require_tree .
+
+$(document).ready(initializeClickables);
+$(document).on('page:load', initializeClickables);
+$(document).ready(function() { $(".select2").select2(); });
+
+function initializeClickables() {
+    $('.clickable').click(function(e) {
+        if(e.target == this) {
+            window.location.href = $(this).attr('data-href');
+        }
+    });
+}

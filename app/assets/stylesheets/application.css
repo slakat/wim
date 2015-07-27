@@ -15,3 +15,62 @@
  *= require_tree .
  *= require_self
  */
+
+
+.actor-img{
+    height: 50px;
+    width: 50px;
+    float: left;
+    /*margin: 5px;*/
+
+}
+
+.selected{
+    border: 2px solid #0088cc;
+}
+
+.tiles.selected{
+    border:none;
+}
+
+.actor-img img.sprite{
+    zoom: .15;
+    display: inline-block;
+    border: none;
+}
+
+.clickable:not(.disabled)
+{
+    cursor: pointer;
+}
+
+img.sprite.disabled {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    filter: opacity(30%);
+    -webkit-filter: opacity(30%);
+    /*background-image: url(https://dl.dropboxusercontent.com/u/70382015/Doto/spritesheet-grayscale.png);*/
+}
+img.sprite.hint{
+    border: 2px solid #e3dc31;
+}
+
+
+#query-hint {
+    color: #999;
+    position: absolute;
+    background: #fff;
+    z-index: -1;
+}
+
+.grid.simple .grid-title {
+    background-color: transparent;
+}
+#query {
+    background-color: transparent !important;
+    color: #333;
+}
+
+.relative {
+    position: relative
+}

@@ -1,0 +1,593 @@
+.row-fluid
+  .col-md-3
+    .tiles.green.overflow-hidden.full-height{:style => "max-height:300px"}
+      .overlayer.bottom-right.fullwidth
+        .overlayer-wrapper
+          .tiles.gradient-black.p-l-20.p-r-20.p-b-20.p-t-20
+            .pull-right
+              =link_to "http://twitter.com/#{@actor.screen_name[1..-1]}",id:'selected-actor-profile',class:"hashtags transparent" do
+                .i.fa.fa-twitter
+                Twitter
+            .clearfix
+      =image_tag '', class:"#{@actor.screen_name[1..-1]} sprite lazy hover-effect-img actor-show"
+    .tiles.black
+      .tiles-body.txt-18
+        .row
+          %h4.text-white.text-center
+            .i.fa.fa-user
+            %span#selected-actor-name
+              =@actor.name
+          %h4.text-white.text-center
+
+    .row
+      .grid{:style => "margin-top:30px;margin-left:10px"}
+        = link_to 'Download All RT', retweets_path(format: :xlsx, id:@actor.id), class: "btn btn-primary",:style => "width:300px"
+        %br
+        =# link_to 'Download CSV list', mentions_path(format: :csv), class:"btn btn-info",:style => "width:300px"
+        = link_to 'Download Most RT', mostrt_path(format: :xlsx,actor_id:@actor.id), class:"btn btn-info",:style => "width:300px"
+
+  .col-md-9
+    .row.tiles-container
+      .col-md-4.col-sm-4.tiles.dark-blue{:style => "height:130px"}
+        .overlayer.top-right
+          .p-r-15.p-t-15
+            %i.fa.fa-bullhorn.text-white.fa-4x
+        .overlayer.bottom-left
+          .p-l-15.p-b-15
+            %h2.text-white=number_with_delimiter(@total_tweets, :delimiter => ',')
+            %h4.text-white Total Tweets
+            %span.text-white.mini-description
+              ="#{@original}% are original messages"
+      .col-md-4.col-sm-4.tiles.light-blue{:style => "height:130px"}
+        .overlayer.top-right
+          .p-r-15.p-t-15
+            %i.fa.fa-reply.text-white.fa-4x
+        .overlayer.bottom-left
+          .p-l-15.p-b-15
+            %h2.text-white=number_with_delimiter(@total_mentions, :delimiter => ',')
+            %h4.text-white Total Mentions
+            %span.text-white.mini-description 
+              ="#{@mentions}% are reply tweets"
+      .col-md-4.col-sm-4.tiles.light-red{:style => "height:130px"}
+        .overlayer.top-right
+          .p-r-15.p-t-15
+            %i.fa.fa-retweet.text-white.fa-4x
+        .overlayer.bottom-left
+          .p-l-15.p-b-15
+            %h2.text-white=number_with_delimiter(@total_rt, :delimiter => ',')
+            %h4.text-white Total Retweets
+            %span.text-white.mini-description 
+              ="#{@actor.ranking_tweets.count} messages with over one hundred RT "
+
+    .col-md-12.hidden-xlg
+      .row.tiles-container.m-b-10.hidden-xlg
+        .col-md-12
+          .m-l-10
+            .tiles.grey.p-t-15.p-b-15.p-l-25
+              %h5.text-black.semi-bold 
+                MOST POPULAR TWEETS
+                |
+                =link_to 'See Full Ranking', actor_retweets_path(@actor.id), class:"text-success bold"
+            .tiles.white
+              -@actor.ranking_tweets.first(3).each do |r|
+                .p-t-20.p-b-15.b-b.b-grey
+                  .post.overlap-left-10
+                    .user-profile-pic-wrapper
+                      .user-profile-pic-2x.white-border
+                        %img{:alt => "", class:"#{@actor.screen_name[1..-1]} sprite", :zoom=> ".15",:height => "45", :width => "45"}/
+                    .info-wrapper.small-width.inline
+                      .info.text-black
+                        %p
+                          =r.text
+                        %p.muted.small-text
+                          =r.tweet_date.to_date
+                      .clearfix
+                    .inline.pull-right
+                      .tiles.white.text-success.bold.p-t-5.p-l-5.p-b-5.p-r-5.inline
+                        %i.fa.fa-heart-o.fa-lg
+                        =r.retweets
+                        RT
+                      .tiles.white.text-success.bold.p-t-5.p-l-5.p-b-5.p-r-5.inline
+                        =link_to r.permanent_link, class:"btn btn-warning" do 
+                          %i.fa.fa-info.fa-lg
+                    .clearfix
+.row
+  .col-md-6          
+    #protests{:style => "min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"}
+  .col-md-6          
+    #months{:style => "min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"}
+
+%br 
+
+.row{style:"margin-bottom:20px"}
+  .col-md-6
+    #timing{:style => "min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"}
+
+  .col-md-6
+    .tiles.black.m-b-10.clearfix
+      .col-md-6.col-sm-12.no-padding
+        .col-md-12.p-t-35.p-r-20.p-b-30.col-sm-12
+          .col-md-12.col-sm-6
+            .row.b-b.b-grey.p-b-10 
+              Ranking Most RT By
+              .col-md-12.col-sm-6.col-xs-6
+                %p.bold.small-text=@actor.name 
+                %h3.bold.text-success is RT by:
+            -@keys.first(5).each do |key|          
+              .row.m-t-15
+                .col-md-6.col-sm-6.col-xs-6
+                  =link_to "http://twitter.com/#{key.dup}",target: 'blank' do
+                    %p.bold.text-white=key.dup
+                .col-md-6.col-sm-6.col-xs-6
+                  %p.text-warning
+                    =@rt_by[key].to_s
+                    RT
+                    %i.fa.fa-sort-asc.fa-lg.text-error{:style => "vertical-align: super;"}
+      .col-md-6.col-sm-12.no-padding
+        .col-md-12.p-t-35.p-r-20.p-b-30.col-sm-12
+          .col-md-12.col-sm-6
+            .row.b-b.b-grey.p-b-10 
+              Ranking Most Replies to
+              .col-md-12.col-sm-6.col-xs-6
+                %p.bold.small-text=@actor.name
+                %h3.bold.text-success talks to:
+            -@my_keys.first(5).each do |key|          
+              .row.m-t-15
+                .col-md-6.col-sm-6.col-xs-6
+                  =link_to "http://twitter.com/#{key.dup}", taget: 'blank' do
+                    %p.bold.text-white=key.dup
+                .col-md-6.col-sm-6.col-xs-6
+                  %p.text-warning
+                    =@my_rt[key].to_s
+                    Tweets
+                    %i.fa.fa-sort-asc.fa-lg.text-error{:style => "vertical-align: super;"}
+        
+
+:javascript
+  $(function () {
+    $('#protests').highcharts({
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: 'Retweets Per Protest'
+        },
+        credits:{
+          text: '',
+          href: '',
+          display:'none'
+        },
+        subtitle: {
+            text: "#{@actor.name}'s retweets in every protest (26)"
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                month: '%e. %b',
+                year: '%b'
+            },
+            title: {
+                text: 'Date'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'retweets'
+            },
+            min: 0
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x:%e. %b}: {point.y:.0f} RT'
+        },
+
+        plotOptions: {
+            spline: {
+                marker: {
+                    enabled: true
+                }
+            }
+        },
+
+        series: [{
+            name: "Year 2011",
+            // Define the data points. All series have a dummy year
+            // of 1970/71 in order to be compared on the same x axis. Note
+            // that in JavaScript, months start at 0 for January, 1 for February etc.
+            data: [
+                [Date.UTC(2000, #{@dates[0].month-1}, #{@dates[0].day}), #{@actor.protests.where(protest:@dates[0]).count}],
+                [Date.UTC(2000, #{@dates[1].month-1}, #{@dates[1].day}), #{@actor.protests.where(protest:@dates[1]).count}],
+                [Date.UTC(2000, #{@dates[2].month-1}, #{@dates[2].day}), #{@actor.protests.where(protest:@dates[2]).count}],
+                [Date.UTC(2000, #{@dates[3].month-1}, #{@dates[3].day}), #{@actor.protests.where(protest:@dates[3]).count}],
+                [Date.UTC(2000, #{@dates[4].month-1}, #{@dates[4].day}), #{@actor.protests.where(protest:@dates[4]).count}],
+                [Date.UTC(2000, #{@dates[5].month-1}, #{@dates[5].day}), #{@actor.protests.where(protest:@dates[5]).count}],
+                [Date.UTC(2000, #{@dates[6].month-1}, #{@dates[6].day}), #{@actor.protests.where(protest:@dates[6]).count}],
+                [Date.UTC(2000, #{@dates[7].month-1}, #{@dates[7].day}), #{@actor.protests.where(protest:@dates[7]).count}],
+                [Date.UTC(2000, #{@dates[8].month-1}, #{@dates[8].day}), #{@actor.protests.where(protest:@dates[8]).count}],
+                [Date.UTC(2000, #{@dates[9].month-1}, #{@dates[9].day}), #{@actor.protests.where(protest:@dates[9]).count}],
+                [Date.UTC(2000, #{@dates[10].month-1}, #{@dates[10].day}), #{@actor.protests.where(protest:@dates[10]).count}],
+                [Date.UTC(2000, #{@dates[11].month-1}, #{@dates[11].day}), #{@actor.protests.where(protest:@dates[11]).count}],
+                [Date.UTC(2000, #{@dates[12].month-1}, #{@dates[12].day}), #{@actor.protests.where(protest:@dates[12]).count}]
+            ]
+        }, {
+            name: "Year 2012",
+            data: [
+                [Date.UTC(2000, #{@dates[13].month-1}, #{@dates[13].day}), #{@actor.protests.where(protest:@dates[13]).count}],
+                [Date.UTC(2000, #{@dates[14].month-1}, #{@dates[14].day}), #{@actor.protests.where(protest:@dates[14]).count}],
+                [Date.UTC(2000, #{@dates[15].month-1}, #{@dates[15].day}), #{@actor.protests.where(protest:@dates[15]).count}],
+                [Date.UTC(2000, #{@dates[16].month-1}, #{@dates[16].day}), #{@actor.protests.where(protest:@dates[16]).count}],
+                [Date.UTC(2000, #{@dates[17].month-1}, #{@dates[17].day}), #{@actor.protests.where(protest:@dates[17]).count}]
+            ]
+        }, {
+            name: "Year 2013",
+            data: [
+                [Date.UTC(2000, #{@dates[18].month-1}, #{@dates[18].day}), #{@actor.protests.where(protest:@dates[18]).count}],
+                [Date.UTC(2000, #{@dates[19].month-1}, #{@dates[19].day}), #{@actor.protests.where(protest:@dates[19]).count}],
+                [Date.UTC(2000, #{@dates[20].month-1}, #{@dates[20].day}), #{@actor.protests.where(protest:@dates[20]).count}],
+                [Date.UTC(2000, #{@dates[21].month-1}, #{@dates[21].day}), #{@actor.protests.where(protest:@dates[21]).count}],
+                [Date.UTC(2000, #{@dates[22].month-1}, #{@dates[22].day}), #{@actor.protests.where(protest:@dates[22]).count}],
+                [Date.UTC(2000, #{@dates[23].month-1}, #{@dates[23].day}), #{@actor.protests.where(protest:@dates[23]).count}],
+                [Date.UTC(2000, #{@dates[24].month-1}, #{@dates[24].day}), #{@actor.protests.where(protest:@dates[24]).count}],
+                [Date.UTC(2000, #{@dates[25].month-1}, #{@dates[25].day}), #{@actor.protests.where(protest:@dates[25]).count}]
+
+            ]
+        }]
+    });
+  });
+
+   $(function () {
+      $('#months').highcharts({
+          chart: {
+              type: 'spline'
+          },
+          title: {
+              text: 'Evolution of tweets'
+          },
+          credits:{
+            text: '',
+            href: '',
+            display:'none'
+          },
+          subtitle: {
+              text: "#{@actor.name}'s tweets per month"
+          },
+          xAxis: {
+              type: 'datetime',
+              dateTimeLabelFormats: { // don't display the dummy year
+                  month: '%b',
+                  year: '%b'
+              },
+              title: {
+                  text: 'Date'
+              }
+          },
+          yAxis: {
+              title: {
+                  text: 'retweets'
+              },
+              min: 0
+          },
+          tooltip: {
+              headerFormat: '<b>{series.name}</b><br>',
+              pointFormat: '{point.x: %b}: {point.y:.0f} Tweets'
+          },
+
+          plotOptions: {
+              spline: {
+                  marker: {
+                      enabled: true
+                  }
+              }
+          },
+
+          series: [{
+              name: "Year 2011",
+              // Define the data points. All series have a dummy year
+              // of 1970/71 in order to be compared on the same x axis. Note
+              // that in JavaScript, months start at 0 for January, 1 for February etc.
+              data: [
+                  [Date.UTC(2000, #{0}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jan%', '%2011%').count}],
+                  [Date.UTC(2000, #{1}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Feb%', '%2011%').count}],
+                  [Date.UTC(2000, #{2}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Mar%', '%2011%').count}],
+                  [Date.UTC(2000, #{3}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Apr%', '%2011%').count}],
+                  [Date.UTC(2000, #{4}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%May%', '%2011%').count}],
+                  [Date.UTC(2000, #{5}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jun%', '%2011%').count}],
+                  [Date.UTC(2000, #{6}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jul%', '%2011%').count}],
+                  [Date.UTC(2000, #{7}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Aug%', '%2011%').count}],
+                  [Date.UTC(2000, #{8}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Sep%', '%2011%').count}],
+                  [Date.UTC(2000, #{9}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Oct%', '%2011%').count}],
+                  [Date.UTC(2000, #{10}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Nov%', '%2011%').count}],
+                  [Date.UTC(2000, #{11}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Dec%', '%2011%').count}]
+              ]
+          }, {
+              name: "Year 2012",
+              data: [
+                  [Date.UTC(2000, #{0}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jan%', '%2012%').count}],
+                  [Date.UTC(2000, #{1}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Feb%', '%2012%').count}],
+                  [Date.UTC(2000, #{2}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Mar%', '%2012%').count}],
+                  [Date.UTC(2000, #{3}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Apr%', '%2012%').count}],
+                  [Date.UTC(2000, #{4}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%May%', '%2012%').count}],
+                  [Date.UTC(2000, #{5}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jun%', '%2012%').count}],
+                  [Date.UTC(2000, #{6}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jul%', '%2012%').count}],
+                  [Date.UTC(2000, #{7}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Aug%', '%2012%').count}],
+                  [Date.UTC(2000, #{8}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Sep%', '%2012%').count}],
+                  [Date.UTC(2000, #{9}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Oct%', '%2012%').count}],
+                  [Date.UTC(2000, #{10}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Nov%', '%2012%').count}],
+                  [Date.UTC(2000, #{11}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Dec%', '%2012%').count}]
+              ]
+          }, {
+              name: "Year 2013",
+              data: [
+                  [Date.UTC(2000, #{0}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jan%', '%2013%').count}],
+                  [Date.UTC(2000, #{1}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Feb%', '%2013%').count}],
+                  [Date.UTC(2000, #{2}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Mar%', '%2013%').count}],
+                  [Date.UTC(2000, #{3}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Apr%', '%2013%').count}],
+                  [Date.UTC(2000, #{4}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%May%', '%2013%').count}],
+                  [Date.UTC(2000, #{5}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jun%', '%2013%').count}],
+                  [Date.UTC(2000, #{6}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Jul%', '%2013%').count}],
+                  [Date.UTC(2000, #{7}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Aug%', '%2013%').count}],
+                  [Date.UTC(2000, #{8}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Sep%', '%2013%').count}],
+                  [Date.UTC(2000, #{9}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Oct%', '%2013%').count}],
+                  [Date.UTC(2000, #{10}, 1), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'%Nov%', '%2013%').count}],
+
+              ]
+          }]
+      });
+    });
+
+   $(function () {
+      $('#timing').highcharts({
+          chart: {
+              type: 'spline'
+          },
+          title: {
+              text: 'Timetable of tweets'
+          },
+          credits:{
+            text: '',
+            href: '',
+            display:'none'
+          },
+          subtitle: {
+              text: "#{@actor.name}'s tweets per day and time"
+          },
+          xAxis: {
+              type: 'datetime',
+              dateTimeLabelFormats: { // don't display the dummy year
+                  day: '%e',
+                  year: '%b'
+              },
+              title: {
+                  text: 'Date'
+              }
+          },
+          yAxis: {
+              title: {
+                  text: 'retweets'
+              },
+              min: 0
+          },
+          tooltip: {
+              headerFormat: '<b>{series.name}</b><br>',
+              pointFormat: '{point.x:%e}: {point.y:.0f} Tweets'
+          },
+
+          plotOptions: {
+              spline: {
+                  marker: {
+                      enabled: true
+                  }
+              }
+          },
+
+          series: [{
+              name: "Monday",
+              // Define the data points. All series have a dummy year
+              // of 1970/71 in order to be compared on the same x axis. Note
+              // that in JavaScript, months start at 0 for January, 1 for February etc.
+              data: [
+                  [Date.UTC(2000, 1, #{0}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 00:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{3}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 03:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{4}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 04:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{5}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 05:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{6}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 06:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{7}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 07:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{8}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 08:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{9}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 09:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{10}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 10:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{11}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 11:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{12}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 12:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{13}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 13:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{14}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 14:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{15}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 15:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{16}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 16:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{17}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 17:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{18}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 18:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{19}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 19:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{20}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 20:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{21}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 21:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{22}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 22:%', '%Mon%').count}],
+                  [Date.UTC(2000, 1, #{23}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 23:%', '%Mon%').count}],
+              ]
+          }, {
+              name: "Tuesday",
+              data: [
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{3}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 03:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{4}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 04:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{5}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 05:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{6}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 06:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{7}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 07:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{8}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 08:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{9}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 09:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{10}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 10:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{11}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 11:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{12}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 12:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{13}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 13:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{14}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 14:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{15}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 15:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{16}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 16:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{17}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 17:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{18}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 18:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{19}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 19:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{20}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 20:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{21}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 21:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{22}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 22:%', '%Tue%').count}],
+                  [Date.UTC(2000, 1, #{23}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 23:%', '%Tue%').count}]
+              ]
+          }, {
+              name: "wednesday",
+              data: [
+                  [Date.UTC(2000, 1, #{0}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 00:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{3}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 03:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{4}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 04:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{5}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 05:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{6}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 06:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{7}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 07:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{8}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 08:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{9}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 09:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{10}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 10:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{11}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 11:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{12}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 12:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{13}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 13:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{14}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 14:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{15}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 15:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{16}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 16:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{17}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 17:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{18}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 18:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{19}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 19:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{20}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 20:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{21}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 21:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{22}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 22:%', '%Wed%').count}],
+                  [Date.UTC(2000, 1, #{23}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 23:%', '%Wed%').count}]
+
+              ]
+          },{
+              name: "Thurday",
+              data: [
+                  [Date.UTC(2000, 1, #{0}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 00:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{3}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 03:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{4}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 04:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{5}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 05:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{6}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 06:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{7}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 07:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{8}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 08:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{9}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 09:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{10}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 10:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{11}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 11:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{12}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 12:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{13}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 13:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{14}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 14:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{15}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 15:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{16}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 16:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{17}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 17:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{18}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 18:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{19}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 19:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{20}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 20:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{21}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 21:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{22}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 22:%', '%Thu%').count}],
+                  [Date.UTC(2000, 1, #{23}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 23:%', '%Thu%').count}]
+              ]
+          }, {
+              name: "Friday",
+              data: [
+                  [Date.UTC(2000, 1, #{0}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 00:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{3}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 03:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{4}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 04:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{5}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 05:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{6}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 06:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{7}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 07:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{8}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 08:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{9}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 09:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{10}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 10:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{11}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 11:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{12}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 12:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{13}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 13:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{14}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 14:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{15}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 15:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{16}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 16:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{17}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 17:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{18}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 18:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{19}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 19:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{20}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 20:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{21}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 21:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{22}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 22:%', '%Fri%').count}],
+                  [Date.UTC(2000, 1, #{23}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 23:%', '%Fri%').count}]
+
+              ]
+          },{
+              name: "Saturday",
+              data: [              
+                  [Date.UTC(2000, 1, #{0}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 00:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{3}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 03:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{4}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 04:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{5}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 05:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{6}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 06:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{7}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 07:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{8}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 08:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{9}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 09:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{10}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 10:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{11}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 11:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{12}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 12:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{13}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 13:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{14}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 14:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{15}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 15:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{16}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 16:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{17}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 17:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{18}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 18:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{19}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 19:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{20}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 20:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{21}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 21:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{22}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 22:%', '%Sat%').count}],
+                  [Date.UTC(2000, 1, #{23}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 23:%', '%Sat%').count}]
+              ]
+          }, {
+              name: "Sunday",
+              data: [             
+                  [Date.UTC(2000, 1, #{0}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 00:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{1}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 01:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{2}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 02:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{3}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 03:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{4}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 04:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{5}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 05:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{6}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 06:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{7}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 07:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{8}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 08:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{9}) , #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 09:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{10}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 10:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{11}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 11:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{12}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 12:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{13}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 13:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{14}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 14:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{15}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 15:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{16}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 16:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{17}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 17:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{18}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 18:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{19}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 19:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{20}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 20:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{21}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 21:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{22}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 22:%', '%Sun%').count}],
+                  [Date.UTC(2000, 1, #{23}), #{@actor.tweets.where("tweet_date LIKE ? AND tweet_date LIKE ?",'% 23:%', '%Sun%').count}]
+
+              ]
+          }
+
+          ]
+      });
+    });
+
+
+

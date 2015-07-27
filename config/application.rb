@@ -19,8 +19,14 @@ module Wim
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+    config.time_zone = 'Santiago'
     config.autoload_paths += %W(#{config.root}/lib)
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.i18n.default_locale = :es
+    I18n.enforce_available_locales = true
+    config.assets.enabled = true
+    config.assets.paths << "#{Rails.root}/app/assets/fonts"
+    config.assets.precompile << /\.(?:svg|eot|woff|ttf)\z/
   end
 end

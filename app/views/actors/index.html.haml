@@ -1,0 +1,48 @@
+.row-fluid
+	.row.tiles-container.m-b-10.hidden-xlg
+		.col-md-12
+			.m-l-10
+				.tiles.grey.p-t-15.p-b-15.p-l-25
+					%h5.text-black.semi-bold 
+						MOST POPULAR ACTORS
+						|
+						%span{class:"text-success bold"} by retweets
+					.tiles.white
+						-@actors.each do |r|
+							-actor=Actor.find(r)
+							.p-t-20.p-b-15.b-b.b-grey
+								.post.overlap-left-10
+									.user-profile-pic-wrapper
+										.user-profile-pic-2x.white-border
+											.actor-img
+												%img{:alt => "", class:"#{actor.screen_name[1..-1]} sprite", :zoom=> ".15",:height => "45", :width => "45"}/
+									.info-wrapper.small-width.inline
+										.info.text-black
+											%p
+												=actor.name
+											%p.muted.small-text
+												=actor.screen_name
+										.clearfix
+									.inline.pull-right
+										.tiles.white.text-success.bold.p-t-5.p-l-5.p-b-5.p-r-5.inline
+											%i.fa.fa-heart-o.fa-lg
+											=@ids[r].to_s
+											RT
+										.tiles.white.text-success.bold.p-t-5.p-l-5.p-b-5.p-r-5.inline
+											=link_to actor_path(r), class:"btn btn-warning" do 
+												%i.fa.fa-info.fa-lg
+									.clearfix
+		.col-md-12
+			.m-l-10
+				.tiles.grey.p-t-15.p-b-15.p-l-25
+					%h5.text-black.semi-bold 
+						RANKING 300 MOST POPULAR TWEETS
+						|
+						%span{class:"text-success bold"} by retweets
+					.tiles.white
+						#retweets-table.col-md-12
+							= render 'retweets_table'
+
+:javascript
+	initSearchableTable('#retweets-table', '#search_form')
+

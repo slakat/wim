@@ -1,0 +1,28 @@
+- if params[:page].nil? || params[:page] == "0" || params[:page] == "1"
+  - x = 0
+- else
+  - page = params[:page].to_i - 1
+  - x = page * 10
+
+%table.table.table-hover.table-condensed
+  %thead
+    %tr
+      %th{style: 'width:5%'} #
+      %th{style: 'width:75%'} Tweet
+      %th{style: 'width:10%'} Retweets
+      %th{style: 'width:10%'}
+  %tbody
+    -@tweets.each_with_index do |key,index|
+      %tr
+        %td=index+1+x
+        %td.v-align-middle
+          =key.text
+        %td.v-align-middle
+          =key.retweets.to_s
+        %td
+          = link_to key.permanent_link, class: 'btn btn-white', target: 'blank' do
+            = fa_icon 'info-circle'
+=page_entries_info @tweets
+=will_paginate @tweets , renderer: BootstrapPagination::Rails
+:javascript
+  initPageableTable('#retweets-table')

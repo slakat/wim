@@ -31,6 +31,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+#use mysql
+gem 'mysql2'
+# Print in a better way rails console
+gem 'awesome_print'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -42,13 +47,13 @@ group :development, :test do
   gem 'spring'
 
   # Use mysql as the database for Active Record
-  gem 'mysql2'
+  #gem 'mysql2'
 
   # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+  #gem 'sqlite3'
 
   # Print in a better way rails console
-  gem 'awesome_print'
+  #gem 'awesome_print'
   gem 'binding_of_caller'
 
   # Errors
@@ -58,14 +63,12 @@ end
 group :production do
   gem 'rails_12factor'
   # Use mysql as the database for Active Record
-  gem 'mysql2'
+  #gem 'mysql2'
   # Print in a better way rails console
-  gem 'awesome_print'
+  #gem 'awesome_print'
 end
 # Beautiful HAML
 gem 'haml-rails'
-
-gem 'mysql2'
 
 # Font-Awesome with rails helpers
 gem 'font-awesome-rails'
@@ -127,3 +130,9 @@ gem 'capistrano-rails', '~> 1.1.1'
 
 # Add this if you're using rvm
 gem 'capistrano-rvm', github: "capistrano/rvm"
+
+gem 'sprite-factory'
+gem 'rmagick'
+
+# Access Ruby Variables from Javascript
+gem 'gon'

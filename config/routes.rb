@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'home/index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -16,12 +15,16 @@ Rails.application.routes.draw do
   # Example resource route (maps HTTP verbs to controller actions automatically):
   resources :mentions, only: [:index]
   resources :actors do
-    resources :retweets, only: [:index, :download]
+    resources :retweets, only: [:index]
   end
+
+  resources :protests
 
   get '/actors/retweets/ranking' => 'retweets#ranking', as: :ranking
   get '/actors/retweets/download' => 'retweets#retweets', as: :retweets
-  get '/protests/:p' => 'retweets#protests', as: :protests
+  get '/actors/retweets/mostrt' => 'retweets#download', as: :mostrt
+  get '/protests/:p' => 'retweets#protests', as: :protests_download
+    get '/stats' => 'actors#index', as: :stats
   get '/zip' => 'retweets#zip', as: :zip
 
   # Example resource route with options:

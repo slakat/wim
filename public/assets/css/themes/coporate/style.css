@@ -46,7 +46,7 @@ html {
 }
 body {
   direction: ltr;
-  background-color: #323237;
+  background-color: #fff;
   color: #6f7b8a;
   font-family: 'Arial';
   font-size: 13px;
@@ -1334,7 +1334,7 @@ body.modal-open .chat-window-wrapper {
 .page-content .content {
   padding-left: 26px;
   padding-right: 26px;
-  padding-top: 83px;
+  /*padding-top: 83px;*/
 }
 .inner-menu {
   display: inline-block;

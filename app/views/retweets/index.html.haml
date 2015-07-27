@@ -1,13 +1,9 @@
-Hola
-
-
-= link_to 'Download CSV list', mentions_path(format: :csv)
-
 .row-fluid
   .col-md-12
     .grid.simple
       .grid-title
-        %h4.semi-bold  Retweets Ranking
+        %h4.semi-bold
+          ="#{@actor.name}'s tweets most Retweeted"
         .tools
           %a.marg-t-10.reload{:href => "javascript:;"}
       .grid-body

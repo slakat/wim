@@ -7,6 +7,7 @@ class RetweetsController < ApplicationController
     #@mentions=Mention.where('text LIKE ?', 'RT @camila_vallejo%')
     #all = Retweet.pluck(:text)
     #time = Retweet.uniq.pluck(:text)
+    @actor = Actor.find(@actor.id)
     @table = Actor.find(@actor.id).retweets.group('text').order('count_text DESC').count('text')
     @keys= @table.keys.paginate(:per_page => per_page, :page => params[:page])
     @mentions = @keys
@@ -47,7 +48,8 @@ class RetweetsController < ApplicationController
   end
 
     def download
-      @rt = RankingTweet.where(" actor_id = ? AND retweets > ?",@actor.id, 99)
+      #@rt = RankingTweet.where(" actor_id = ? AND retweets > ?",@actor.id, 99)
+      @rt = RankingTweet.where(" actor_id = ?",@actor.id)
       puts 'hola'
       respond_to do |format|
         format.html
@@ -55,18 +57,21 @@ class RetweetsController < ApplicationController
           headers['Content-Disposition'] = "attachment; filename=\"retweets\""
           headers['Content-Type'] ||= 'text/csv'
         end
+        format.xlsx {render xlsx: 'ranking',filename: "#{@actor.screen_name}_MostRT.xlsx"}
       end
     end
 
   def retweets
-    @rt = Actor.first.retweets.where("text LIKE ?","%Hoy a las 21 horas cacerolazo%").order(:rt_date)
+    #@rt = Actor.first.retweets.where("text LIKE ?","%Hoy a las 21 horas cacerolazo%").order(:rt_date)
+    actor=Actor.find(params[:id])
+    @rt = actor.retweets
     respond_to do |format|
       format.html
       format.csv do
-        headers['Content-Disposition'] = "attachment; filename=\"retweets-camila-mostRT.csv\""
+        headers['Content-Disposition'] = "attachment; filename=\"#{actor.screen_name}-RT.csv\""
         headers['Content-Type'] ||= 'text/csv'
       end
-      format.xlsx {render xlsx: 'retweets',filename: "retweets-camila-mostRT.xlsx"}
+      format.xlsx {render xlsx: 'retweets',filename: "#{actor.screen_name}RT.xlsx"}
     end
   end
 
