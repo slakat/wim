@@ -3,31 +3,13 @@ lock '3.1.0'
 
 set :application, 'wim'
 set :repo_url, 'git@github.com:slakat/wim.git'
-set :deploy_user, "root"
-set :deploy_to, '/home/deploy/wim'
-
-set :linked_files, %w{config/database.yml}
-set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-set :bundle_binstubs, nil
-
-namespace :deploy do
-
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      execute :touch, release_path.join('tmp/restart.txt')
-    end
-  end
-
-  after :publishing, 'deploy:restart'
-  after :finishing, 'deploy:cleanup'
-end
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
 # Default deploy_to directory is /var/www/my_app
-# set :deploy_to, '/var/www/my_app'
+set :user, 'slakat'
+set :deploy_to, '/home/deploy/wim'
 
 # Default value for :scm is :git
 # set :scm, :git
@@ -53,6 +35,30 @@ end
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
+set :user_sudo, false
+
+set :rails_env, "production" # sets your server environment to Production mode
+
+set :scm, :git  # sets version control
+
+default_run_options[:pty] = true
+
+role :web, "104.236.234.135" # Your HTTP server, Apache/etc
+role :app, "104.236.234.135" # We made the app role the same as our `Web` server 
+
+# We made the database role the same as our our `Web` server 
+role :db,  "104.236.234.135", :primary => true # This is where Rails migrations will run
+
+
+namespace :deploy do
+  task :start do ; end
+  task :stop do ; end
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+  end
+end
+
+=begin
 namespace :deploy do
 
   desc 'Restart application'
@@ -73,5 +79,7 @@ namespace :deploy do
       # end
     end
   end
+  =end
+
 
 end
