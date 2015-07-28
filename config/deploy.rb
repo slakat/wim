@@ -9,7 +9,7 @@ set :repo_url, 'git@github.com:slakat/wim.git'
 
 # Default deploy_to directory is /var/www/my_app
 set :user, 'slakat'
-set :deploy_to, '/home/deploy/wim'
+set :deploy_to, '/home/slakat/wim'
 
 # Default value for :scm is :git
 # set :scm, :git
