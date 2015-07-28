@@ -1,75 +1,34 @@
-# config valid only for Capistrano 3.1
-lock '3.1.0'
+require 'capistrano/bundler'
+require 'capistrano/rails'
+
+# If you are using rbenv add these lines:
+# require 'capistrano/rbenv'
+# set :rbenv_type, :user # or :system, depends on your rbenv setup
+# set :rbenv_ruby, '2.0.0-p451'
+
+# If you are using rvm add these lines:
+# require 'capistrano/rvm'
+# set :rvm_type, :user
+# set :rvm_ruby_version, '2.0.0-p451'
+#After we've got Capistrano installed, we can configure the config/deploy.rb to setup our general configuration for our app. Edit that file and make it like the following replacing "myapp" with the name of your application and git repository:
 
 set :application, 'wim'
 set :repo_url, 'git@github.com:slakat/wim.git'
 
-# Default branch is :master
-# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-
-# Default deploy_to directory is /var/www/my_app
-set :user, 'slakat'
 set :deploy_to, '/home/slakat/wim'
 
-# Default value for :scm is :git
-# set :scm, :git
-
-# Default value for :format is :pretty
-# set :format, :pretty
-
-# Default value for :log_level is :debug
-# set :log_level, :debug
-
-# Default value for :pty is false
-# set :pty, true
-
-# Default value for :linked_files is []
-# set :linked_files, %w{config/database.yml}
-
-# Default value for linked_dirs is []
-# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-# Default value for keep_releases is 5
-# set :keep_releases, 5
-
-set :user_sudo, false
-
-set :rails_env, "production" # sets your server environment to Production mode
-
-set :scm, :git  # sets version control
-
-#default_run_options[:pty] = true
-
-role :web, "104.236.234.135" # Your HTTP server, Apache/etc
-role :app, "104.236.234.135" # We made the app role the same as our `Web` server 
-
-# We made the database role the same as our our `Web` server 
-role :db,  "104.236.234.135", :primary => true # This is where Rails migrations will run
-
+set :linked_files, %w{config/database.yml}
+set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 namespace :deploy do
 
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      # Your restart mechanism here, for example:
-      # execute :touch, release_path.join('tmp/restart.txt')
+      execute :touch, release_path.join('tmp/restart.txt')
     end
   end
 
-  after :publishing, :restart
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
-
+  after :publishing, 'deploy:restart'
+  after :finishing, 'deploy:cleanup'
 end
