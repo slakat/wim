@@ -41,7 +41,7 @@ set :rails_env, "production" # sets your server environment to Production mode
 
 set :scm, :git  # sets version control
 
-default_run_options[:pty] = true
+#default_run_options[:pty] = true
 
 role :web, "104.236.234.135" # Your HTTP server, Apache/etc
 role :app, "104.236.234.135" # We made the app role the same as our `Web` server 
