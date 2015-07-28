@@ -51,15 +51,6 @@ role :db,  "104.236.234.135", :primary => true # This is where Rails migrations 
 
 
 namespace :deploy do
-  task :start do ; end
-  task :stop do ; end
-  task :restart, :roles => :app, :except => { :no_release => true } do
-    run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-  end
-end
-
-=begin
-namespace :deploy do
 
   desc 'Restart application'
   task :restart do
@@ -79,7 +70,6 @@ namespace :deploy do
       # end
     end
   end
-  =end
 
 
 end
