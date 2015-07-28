@@ -1,5 +1,4 @@
 # Load DSL and Setup Up Stages
-load 'deploy/assets' # this will precompile your assets every time you deploy
 
 require 'capistrano/setup'
 
