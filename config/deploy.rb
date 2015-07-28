@@ -1,3 +1,4 @@
+lock '3.1.0'
 
 set :application, 'wim'
 set :repo_url, 'git@github.com:slakat/wim.git'

@@ -8,13 +8,14 @@ role :app, %w{104.236.234.135}
 role :web, %w{104.236.234.135}
 role :db,  %w{104.236.234.135}
 
+set :stage, :production
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server
 # definition into the server list. The second argument
 # something that quacks like a hash can be used to set
 # extended properties on the server.
-server '104.236.234.135', user: 'slakat', roles: %w{web app}, my_property: :my_value
+server '104.236.234.135', user: 'slakat', roles: %w{web app}
 
 # you can set custom ssh options
 # it's possible to pass any option but you need to keep in mind that net/ssh understand limited list of options

@@ -16,7 +16,7 @@ require 'capistrano/rails'
 # If you are using rvm add these lines:
  require 'capistrano/rvm'
  set :rvm_type, :user
- set :rvm_ruby_version, '2.0.0-p451'
+ set :rvm_ruby_version, '2.1.5-p5p273'
 #After we've got Capistrano installed, we can configure the config/deploy.rb to setup our general configuration for our app. Edit that file and make it like the following replacing "myapp" with the name of your application and git repository:
 
 
