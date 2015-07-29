@@ -136,3 +136,4 @@ gem 'rmagick'
 
 # Access Ruby Variables from Javascript
 gem 'gon'
+gem 'sprockets', '~> 2.0

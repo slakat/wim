@@ -19,6 +19,11 @@
 //= require highcharts/modules/data
 //= require highcharts/modules/heatmap
 //= require highcharts/modules/exporting
+//= require home
+//= require tooltips
+//= sand-signika
+//= jquery-ui
+//= bootstrap
 //= require_tree .
 
 $(document).ready(initializeClickables);
