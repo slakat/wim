@@ -9,7 +9,7 @@ Dir.foreach('tmp/test/tweets/') do |item|
   actor_s = item.split('.')[0].split(' ')[1].downcase
   puts filename
   puts actor_s
-  actor = Actor.where("LOWER(actors.screen_name) LIKE :actor_part", {:actor_part => "@#{actor_s.downcase}%"}).first
+  actor = Actor.where("LOWER(actors.screen_name) LIKE :actor_part", {:actor_part => "@#{actor_s}%"}).first
   options = {:key_mapping =>{ :favorited => :favorited, :in_reply_to_screen_name => :in_reply_to_screen_name, :permanent_link => :permanent_link, :lang => :lang, :source => :source, :text => :text, :user_profile_description => :user_profile_description, :user_profile_location => :user_profile_location, :user_created_at=> :user_date, :user_followers_count => :user_followers_count, :user_name => :user_name, :user_screen_name => :user_screen_name,:user_time_zone => :user_time_zone,:created_at => :tweet_date}, :remove_unmapped_keys => true, :verbose => false }
   unless actor.nil?
     puts actor.screen_name
