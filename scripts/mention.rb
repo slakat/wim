@@ -1,10 +1,10 @@
 require 'smarter_csv'
 
 
-Dir.foreach('tmp/test') do |item|
+Dir.foreach('tmp/test/menciones') do |item|
   next if item == '.' or item == '..' or item[0]=='.'
   # without using chunks:
-  filename = 'tmp/test/'+item
+  filename = 'tmp/test/menciones/'+item
 
   actor_s = item.split('.')[0].split(' ')[0].downcase
   puts filename

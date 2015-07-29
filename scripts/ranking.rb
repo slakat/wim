@@ -9,7 +9,7 @@ Actor.all.each do |a|
     k = key.partition(': ').last[0...-4]
     puts k
 
-    t = a.tweets.where(["text LIKE ?", "%#{k.gsub("'", "''")}%"]).first
+    t = a.tweets.where(["LOWER(text) LIKE ?", "%#{k.gsub("'", "''")}%".downcase]).first
     if t
       tDate = t.tweet_date
     end
