@@ -21,6 +21,13 @@ class ActorsController < ApplicationController
     @my_keys= @my_rt.keys
   end
 
+  def get_content_to_display
+     #Place code here
+     render :update do |page|
+          page.replace_html "display_ajax", :partial => 'layouts/loading'
+     end
+end
+
    def sort_column
     Retweet.has_column_text?(params[:sort]) ? params[:sort] : :text
   end

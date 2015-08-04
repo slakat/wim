@@ -2,7 +2,7 @@ Actor.all.each do |a|
 
   @table = a.retweets.group('text').order('count_text DESC').count('text')
   #@keys= @table.keys.paginate(:per_page => per_page, :page => params[:page])
-  @mentions = @keys
+  #@mentions = @keys
 
   @keys= @table.keys
   @keys.each_with_index do |key,index|
@@ -22,7 +22,7 @@ Actor.all.each do |a|
 
     puts index
 
-    unless index<301
+    unless index<501
       break
     end
   end

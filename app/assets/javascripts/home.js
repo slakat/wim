@@ -11,25 +11,6 @@ function initializeHome() {
 
 function initializeDnD() {
     $('img.sprite').on('click',updateSelect);
-    $('.sprite').draggable({
-        revert: "invalid",
-        zIndex: 100,
-        helper: "clone",
-        snap: '.droppable',
-        snapMode: 'inner',
-        stop: function(event) {
-            $(event.toElement).one('click', function(e) { e.stopImmediatePropagation(); });
-        }
-    });
-
-    $('.draft').droppable({
-        hoverClass: "ui-state-highlight",
-        drop: function(event, ui) {
-            var name = ui.draggable.attr('data-original-title');
-            $(this).addClass(ui.draggable.attr('class'));
-            console.log(name);
-        }
-    });
 }
 
 function initializeQuery() {

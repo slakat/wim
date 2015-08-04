@@ -24,4 +24,8 @@
     .content
       .overflow-hidden.full-height.margin-20{:style => "max-height:45px;margin-bottom:15px"}
         %h1.text-black.bold.text-center Web in Movement
+      #loading
+        .content
+          %p LOADING
+          =image_tag "ajax-loader.gif"
       = yield

@@ -16,6 +16,20 @@
  *= require_self
  */
 
+#loading{
+    z-index: 10;
+    background: rgba(255,255,255,.9);
+    width: 100%;
+    display: block;
+    position: absolute;
+    height: 100%;
+}
+
+#loading .content{
+    position: absolute;
+    left:50%;
+    top: 50%;
+}
 
 .actor-img{
     height: 50px;

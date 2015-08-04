@@ -16,7 +16,7 @@ default: &default
 development:
   <<: *default
   #database: db/development.sqlite3
-  database: wim_dev
+  database: wim2_dev
   username: wim2_dev_user
   password: pass
   host: 127.0.0.1

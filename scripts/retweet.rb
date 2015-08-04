@@ -1,5 +1,5 @@
 Actor.all.each do |a|
-   @mentions=a.mentions.where('LOWER(text) LIKE ?', "%RT #{a.real_username}:%".downcase)
+   @mentions=a.mentions.where('LOWER(text) LIKE ?', "%#{a.real_username}:%".downcase)
    puts "======init #{a.screen_name} #{@mentions.count}========="
    @mentions.each_with_index do |r, index|
       date = r.mention_date.to_datetime
