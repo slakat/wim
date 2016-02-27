@@ -95,11 +95,11 @@
 	$(function () {
 	    $('#protests').highcharts({
 	        title: {
-	            text: 'Retweets per Protest',
+	            text: 'Retweets by Types of Actors During Protest Events (%)',
 	            x: -20 //center
 	        },
 	        subtitle: {
-	            text: 'by actors nature',
+	            text: '',
 	            x: -20
 	        },
 	        credits:{
@@ -195,7 +195,7 @@
 	               #{b26}
 	            ]
 	        }, {
-	            name: 'Others Org.',
+	            name: 'Other Org.',
 	            data: [
 				   #{c1 },
 	               #{c2 },
@@ -233,17 +233,17 @@
 
 	    var colors = [Highcharts.Color(Highcharts.getOptions().colors[0]).brighten((0 - 3) / 7).get(),Highcharts.Color(Highcharts.getOptions().colors[0]).brighten((1 - 3) / 7).get(),Highcharts.Color(Highcharts.getOptions().colors[0]).brighten((2 - 3) / 7).get()],
 
-	    categories = ['Year 2011', 'Year 2012', 'Year 2013'],
+	    categories = ['2011', '2012', '2013'],
 	    data = [{
 	        y: #{year1},
 	        color: colors[0],
 	        drilldown: {
 	            name: 'MSIE versions',
-	            categories: ['Leaders', 'Representative Organizations', 'Others Organizations'],
+	            categories: ['Leaders', 'Representative Organizations', 'Other Organizations'],
 	            data: [
-	            #{(year1.fdiv(100)*(a1+a2+a3+a4+a5+a6+a7+a8+a9+a10+a11+a12+a13).fdiv(13)).round(2)},
-	            #{(year1.fdiv(100)*(b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11+b12+b13).fdiv(13)).round(2)},
-	            #{(year1.fdiv(100)*(c1+c2+c3+c4+c5+c6+c7+c8+c9+c10+c11+c12+c13).fdiv(13)).round(2)}],
+	            #{(year1.fdiv(100)*(a1+a2+a3+a4+a5+a6+a7+a8+a9+a10+a11+a12+a13).fdiv(13)).round(1)},
+	            #{(year1.fdiv(100)*(b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11+b12+b13).fdiv(13)).round(1)},
+	            #{(year1.fdiv(100)*(c1+c2+c3+c4+c5+c6+c7+c8+c9+c10+c11+c12+c13).fdiv(13)).round(1)}],
 	            color: colors[0]
 	        }
 	    }, {
@@ -251,11 +251,11 @@
 	        color: colors[1],
 	        drilldown: {
 	            name: 'Firefox versions',
-	            categories: ['Leaders', 'Representative Organizations', 'Others Organizations'],
+	            categories: ['Leaders', 'Representative Organizations', 'Other Organizations'],
 	            data: [
-	            #{(year2.fdiv(100)*(a14+a15+a16+a17+a18).fdiv(5)).round(2)},
-	            #{(year2.fdiv(100)*(b14+b15+b16+b17+b18).fdiv(5)).round(2)},
-	            #{(year2.fdiv(100)*(c14+c15+c16+c17+c18).fdiv(5)).round(2)}],
+	            #{(year2.fdiv(100)*(a14+a15+a16+a17+a18).fdiv(5)).round(1)},
+	            #{(year2.fdiv(100)*(b14+b15+b16+b17+b18).fdiv(5)).round(1)},
+	            #{(year2.fdiv(100)*(c14+c15+c16+c17+c18).fdiv(5)).round(1)}],
 	            color: colors[1]
 	        }
 	    }, {
@@ -263,11 +263,11 @@
 	        color: colors[2],
 	        drilldown: {
 	            name: 'Chrome versions',
-	            categories: ['Leaders', 'Representative Organizations', 'Others Organizations'],
+	            categories: ['Leaders', 'Representative Organizations', 'Other Organizations'],
 	            data: [
-	            #{(year3.fdiv(100)*(a19+a20+a21+a22+a23+a24+a25+a26).fdiv(8)).round(2)},
-	            #{(year3.fdiv(100)*(b19+b20+b21+b22+b23+b24+b25+b26).fdiv(8)).round(2)},
-	            #{(year3.fdiv(100)*(c19+c20+c21+c22+c23+c24+c25+c26).fdiv(8)).round(2)},
+	            #{(year3.fdiv(100)*(a19+a20+a21+a22+a23+a24+a25+a26).fdiv(8)).round(1)},
+	            #{(year3.fdiv(100)*(b19+b20+b21+b22+b23+b24+b25+b26).fdiv(8)).round(1)},
+	            #{(year3.fdiv(100)*(c19+c20+c21+c22+c23+c24+c25+c26).fdiv(8)).round(1)},
 	 			],
 	            color: colors[2]
 	        }
@@ -310,11 +310,11 @@
 	        type: 'pie'
 	    },
 			title: {
-	        	text: 'Retweets per Protest',
+	        	text: 'Retweets by Types of Actors 2011-2013 (%)',
 	        	x: -20 //center
 		        },
 	        subtitle: {
-	            text: 'by actors nature',
+	            text: '',
 	            x: -20
 	        },
 	        credits:{

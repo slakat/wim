@@ -9,10 +9,25 @@ class Retweet < ActiveRecord::Base
   def self.to_csv(p)
     @rt = Protest.where(protest: p)
     CSV.generate( :row_sep => ?\n, :quote_char => ?\ ) do |csv|
-      headers = ['to', 'from', 'date', 'protest' ]
+      headers = ['source', 'target', 'date', 'protest','nature','relevant_year' ]
       csv << headers
       @rt.each do |m|
-        csv << [m.to, m.from, m.created_date, m.protest ]
+        year = false
+        puts m
+        actor = Actor.where(real_username: m.to).first
+        unless actor.nil?
+          case p.to_date.strftime("%Y")
+            when "2011"
+              year = actor.year_2011
+            when "2012"
+              year =  actor.year_2012
+            when "2013"
+              year = actor.year_2013
+          end
+          if year
+            csv << [m.to, m.from, m.created_date, m.protest,actor.nature,p]
+          end
+        end
       end
     end
   end

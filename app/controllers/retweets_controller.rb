@@ -77,7 +77,7 @@ class RetweetsController < ApplicationController
 
     def ranking
       #@rt = RankingTweet.where(" actor_id = ? AND retweets > ?",@actor.id, 99)
-      @rt = RankingTweet.order('retweets DESC').limit(300)
+      @rt = RankingTweet.order('retweets DESC').limit(500)
 
 
       respond_to do |format|

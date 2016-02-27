@@ -11,14 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150604145747) do
+ActiveRecord::Schema.define(version: 20150914152828) do
 
   create_table "actors", force: :cascade do |t|
     t.string  "name",          limit: 191
     t.string  "screen_name",   limit: 191
     t.integer "nature",        limit: 4,   default: 0
-    t.integer "relevant_year", limit: 4
+    t.boolean "year_2011",     limit: 1,   default: false
     t.string  "real_username", limit: 191
+    t.boolean "year_2012",     limit: 1,   default: false
+    t.boolean "year_2013",     limit: 1,   default: false
   end
 
   add_index "actors", ["screen_name"], name: "index_actors_on_screen_name", using: :btree
